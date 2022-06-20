@@ -59,9 +59,9 @@ const EventModal = () => {
             <div className="flex gap-x-2">
                {labels.map((label, i) => (
                  <span 
-                  key={i} 
-                  onClick={() => setSelectedLabel(label)}
-                  className={`bg-${label}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer`}
+                 key={i} 
+                 onClick={() => setSelectedLabel(label)}
+                  className={`${label.circle} w-6 h-6 rounded-full flex items-center justify-center cursor-pointer`}
                 > 
                   {selectedLabel === label && 
                     <span className="material-icons-outlined text-white text-sm">check</span>
