@@ -49,7 +49,7 @@ const Day = ({ day, rowIndex }) => {
         {daysWithEvents?.map((ev, i) => (
           <div 
             key={i}
-            // onClick={}
+            onClick={() => setSelectedEvent(ev)}
             className={`${ev.label.bg} p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
           >
             {ev.title}

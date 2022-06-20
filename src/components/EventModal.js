@@ -3,22 +3,33 @@ import GlobalContext from '../context/GlobalContext';
 import { labels } from '../constants/labels';
 
 const EventModal = () => {
-  const { setShowEventModal, selectedDay, dispatchEvent } = useContext(GlobalContext);
+  const { 
+    setShowEventModal, 
+    selectedDay, 
+    dispatchEvent, 
+    selectedEvent 
+  } = useContext(GlobalContext);
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [selectedLabel, setSelectedLabel] = useState(labels[0]);
+  const [title, setTitle] = useState(selectedEvent ?  selectedEvent.title : '');
+  const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : '');
+  const [selectedLabel, setSelectedLabel] = useState(
+    selectedEvent ?  labels.find(label => label.id === selectedEvent.label.id) : labels[0]
+  );
 
   const handleEvent = (e) => {
     e.preventDefault();
     const calendarEvent = {
-      id: Date.now(),
+      id: selectedEvent ? selectedEvent.id : Date.now(),
       title,
       description,
-      label: selectedLabel.valueOf(),
+      label: selectedLabel,
       day: selectedDay
     };
-    dispatchEvent({ type: "ADD_EVENT", payload: calendarEvent});
+    if(selectedEvent) {
+      dispatchEvent({ type: "EDIT_EVENT", payload: calendarEvent });
+    }else{
+      dispatchEvent({ type: "ADD_EVENT", payload: calendarEvent});
+    }
     setShowEventModal(false);
   }
   
@@ -29,9 +40,23 @@ const EventModal = () => {
           <span className="material-icons-outlined text-gray-400">
             drag_handle
           </span>
-          <button onClick={() => setShowEventModal(false)}>
-            <span className="material-icons-outlined text-gray-400">close</span>
-          </button>
+          <div>
+            {selectedEvent && (
+              <span 
+                className="material-icons-outlined text-gray-400"
+                onClick={() => {
+                  dispatchEvent({
+                    type: "DELETE_EVENT", 
+                    payload: selectedEvent
+                  })}
+                }>
+                delete
+              </span>
+            )}
+            <button onClick={() => setShowEventModal(false)}>
+              <span className="material-icons-outlined text-gray-400">close</span>
+            </button>
+          </div>
         </header>
         <div className="p-3">
           <div className="grid grid-cols-1/5 items-end gap-y-7">
