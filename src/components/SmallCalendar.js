@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { getMonth } from '../util';
 import GlobalContext from '../context/GlobalContext';
-import { Fragment } from 'react';
 
 const SmallCalendar = () => {
   const { 

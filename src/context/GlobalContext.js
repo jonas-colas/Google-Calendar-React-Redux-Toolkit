@@ -13,8 +13,6 @@ const GlobalContext = React.createContext({
   storedEvents: [],
   selectedEvent: null, 
   setSelectedEvent: () => {},
-  // selectedHour: null,
-  // setSelectedHour: () => {},
 });
 
 export default GlobalContext;
