@@ -39,6 +39,12 @@ const ContextWrapper = (props) => {
       setMonthIndex(smallCalendarMonth);
     }
   }, [smallCalendarMonth]);
+  
+  useEffect(() => {
+    if(!showEventModal) {
+      setSelectedEvent(null);
+    }
+  }, [showEventModal]);
 
   return (
     <GlobalContext.Provider
