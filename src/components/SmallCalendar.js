@@ -17,6 +17,7 @@ const SmallCalendar = () => {
 
   const selectedDay = useSelector(state => state.calendar.selectedDay)
   const monthIndex = useSelector(state => state.calendar.monthIndex);
+  const monthSelected = useSelector(state => state.calendar.monthIndex);
 
   const [currenMonthIndex, setCurrenMonthIndex] = useState(getMonthNum(today));
   const [currenMonth, setCurrenMonth] = useState(pickMonth());
@@ -76,7 +77,11 @@ const SmallCalendar = () => {
                   dispatch(daySel(day));
                 }}
               >
-                <span className="text-xs text-center">{getDate(day)}</span>
+                { getMonthNum(day) === monthSelected &&
+                  <span className="text-xs text-center">
+                    {getDate(day)}
+                  </span>
+                }
               </button>
             ))}
           </Fragment>

@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
-import { dateMonthYear, getDate, today, getWeekday } from '../utils';
+import { getMonthNum, dateMonthYear, getDate, today, getWeekday } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../features/slices/modal-slice';
 import { getAllEvents } from '../features/slices/event-slice';
 import { eventSel, daySel } from '../features/slices/calendar-slice';
 
 const Day = ({ day, rowIndex }) => {
-  const [daysWithEvents, setDaysWithEvents] = useState();
-
   const dispatch = useDispatch();
-
   const getEvents = useSelector(getAllEvents);
+  const monthSelected = useSelector(state => state.calendar.monthIndex);
+  
+  const [daysWithEvents, setDaysWithEvents] = useState();
   
   useEffect(() => {
-    
     const events = getEvents.filter(
       evt => dateMonthYear(evt.day) === dateMonthYear(day)
     );
@@ -36,9 +35,11 @@ const Day = ({ day, rowIndex }) => {
         )}
       </header>
       <div className="float-left">
-        <p className={`text-sm p-1 my-1 ${getCurrentDayClass()}`}>
-          {getDate(day)}
-        </p>
+        { getMonthNum(day) === monthSelected &&
+          <p className={`text-sm p-1 my-1 ${getCurrentDayClass()}`}>
+            {getDate(day)}
+          </p>
+        }
       </div>
       <div 
         className="flex-1 cursor-pointer" 

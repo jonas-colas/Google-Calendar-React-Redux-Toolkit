@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { dayMonthDate, labels } from '../utils';
+import { dayMonthDate, labels, getHour } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../features/slices/modal-slice';
 import { addEvent, updateEvent, deleteEvent } from '../features/slices/event-slice';
@@ -17,6 +17,8 @@ const EventModal = () => {
   );
   const [borderColor, setBorderColor] = useState('border-gray-200');
   
+  // console.log(getHour());
+
   const handleEvent = (e) => {
     e.preventDefault();
     if(title.length === 0 || title.length > 30) {

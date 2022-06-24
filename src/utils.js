@@ -4,6 +4,14 @@ function digit(num) {
   return num.toString().padStart(2, '0');
 }
 
+export const getHour = () => {
+  let hours = [];
+  for (let i = 0; i < 24; i++) {
+    hours.push(i);
+  }
+  return hours;
+}
+
 export const dateMonthYear = (d) => {
   const date = digit(new Date(d).getDate());
   const month = digit(new Date(d).getMonth() +1);
@@ -60,22 +68,6 @@ export function pickMonth(month = getMonthNum(today)) {
   });
   return daysMatrix;
 };
-
-// export const convert = (obj) => {
-//   return JSON.stringify(obj);
-// }
-
-// function initEvents() {
-//   const eventStorages = localStorage.getItem('allEvents');
-//   const parsedEvents = eventStorages ? JSON.parse(eventStorages) : [];
-//   return parsedEvents;
-// }
-
-// const [storedEvents, dispatchEvent] = useReducer(eventsReducer, [], initEvents);
-
-// useEffect(() => {
-//   localStorage.setItem('allEvents', JSON.stringify(storedEvents));
-// }, [storedEvents]);
 
 export const dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];;
 
