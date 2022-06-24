@@ -12,12 +12,14 @@ const eventSlice = createSlice({
       state.events.push(action.payload);
     },
     updateEvent: (state, action) => {
-      const {id, title, description, label, day} = action.payload;
+      const {id, title, description, label, hourStart, hourEnd, day} = action.payload;
       const event = state.events.find(ev => ev.id === id);
       if(event) {
         event.title = title;
         event.description = description;
         event.label = label;
+        event.hourStart = hourStart;
+        event.hourEnd = hourEnd;
         event.day = day;
       }
     },

@@ -4,12 +4,16 @@ function digit(num) {
   return num.toString().padStart(2, '0');
 }
 
-export const getHour = () => {
+export const getHours = () => {
   let hours = [];
   for (let i = 0; i < 24; i++) {
-    hours.push(i);
+    hours.push(`${i+1}:00`);
   }
   return hours;
+}
+export const timeToNum = (time) => {
+  const t = time.split(":");
+  return parseInt(t[0] * 60) + parseInt(t[1]);
 }
 
 export const dateMonthYear = (d) => {
