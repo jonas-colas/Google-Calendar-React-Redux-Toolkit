@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector} from 'react-redux';
-import { pickMonth } from './utils';
+import { pickMonth, getMonthNum, today } from './utils';
 import CalendarHearder from './components/CalendarHearder';
 import Sidebar from './components/Sidebar';
 import Month from './components/Month';
@@ -16,6 +16,10 @@ function App() {
   
   const [currenMonth, setCurrentMonth] = useState(pickMonth());
   
+  useEffect(() => {
+    dispatch(upMonth(getMonthNum(today)))
+  }, []);
+
   useEffect(() => {
     if(!openModal) {
       dispatch(eventUnSelect());

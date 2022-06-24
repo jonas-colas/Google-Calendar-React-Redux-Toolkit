@@ -9,6 +9,8 @@ import {
   today,
   getMonthNum,
   getYear,
+  getMonth,
+  onlyDateOfMonth
 } from '../utils';
 import { daySel, smallCal } from '../features/slices/calendar-slice';
 
@@ -17,10 +19,10 @@ const SmallCalendar = () => {
 
   const selectedDay = useSelector(state => state.calendar.selectedDay)
   const monthIndex = useSelector(state => state.calendar.monthIndex);
-  const monthSelected = useSelector(state => state.calendar.monthIndex);
 
   const [currenMonthIndex, setCurrenMonthIndex] = useState(getMonthNum(today));
   const [currenMonth, setCurrenMonth] = useState(pickMonth());
+  const [monthSel, setMonthSel] = useState(getMonth(today));  
 
   useEffect(() => {
     setCurrenMonth(pickMonth(currenMonthIndex));
@@ -29,6 +31,14 @@ const SmallCalendar = () => {
   useEffect(() => {
     setCurrenMonthIndex(monthIndex);
   }, [monthIndex]);
+
+  
+  useEffect(() => {
+    const getSelMonth = () => {
+      setMonthSel(onlyDateOfMonth(currenMonth));
+    };
+    getSelMonth()
+  }, [currenMonth]);
 
   const getCurrentDayClass = (day) => {
     const slctDay = selectedDay && dateMonthYear(selectedDay);
@@ -77,11 +87,11 @@ const SmallCalendar = () => {
                   dispatch(daySel(day));
                 }}
               >
-                { getMonthNum(day) === monthSelected &&
+                { getMonth(day) === monthSel &&
                   <span className="text-xs text-center">
                     {getDate(day)}
                   </span>
-                }
+                } 
               </button>
             ))}
           </Fragment>

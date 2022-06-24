@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { getMonthNum, dateMonthYear, getDate, today, getWeekday } from '../utils';
+import { getMonth, dateMonthYear, getDate, today, getWeekday } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../features/slices/modal-slice';
 import { getAllEvents } from '../features/slices/event-slice';
 import { eventSel, daySel } from '../features/slices/calendar-slice';
 
-const Day = ({ day, rowIndex }) => {
+const Day = ({ day, rowIndex, monthSel }) => { 
   const dispatch = useDispatch();
   const getEvents = useSelector(getAllEvents);
-  const monthSelected = useSelector(state => state.calendar.monthIndex);
   
   const [daysWithEvents, setDaysWithEvents] = useState();
   
@@ -35,11 +34,11 @@ const Day = ({ day, rowIndex }) => {
         )}
       </header>
       <div className="float-left">
-        { getMonthNum(day) === monthSelected &&
+        { getMonth(day) === monthSel &&
           <p className={`text-sm p-1 my-1 ${getCurrentDayClass()}`}>
             {getDate(day)}
           </p>
-        }
+        } 
       </div>
       <div 
         className="flex-1 cursor-pointer" 

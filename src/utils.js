@@ -20,7 +20,7 @@ export const dateMonthYear = (d) => {
 }
 
 export const monthYear = (y, m) => {
-  const d = new Date(y, m)
+  const d = new Date(y, m); 
   const month = new Date(d).getMonth();
   const year = new Date(d).getFullYear();
   return (`${monthList[month]} ${year}`);
@@ -59,15 +59,27 @@ export function pickMonth(month = getMonthNum(today)) {
   const year = getYear(today);
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   let currentMonthCount = 0 - firstDayOfMonth;
-  const daysMatrix = new Array(5).fill([]).map(() => {
+
+  const daysMatrix = new Array(6).fill([]).map(() => {
     return new Array(7).fill(null).map(() => {
       currentMonthCount++;
-      const pm =  new Date(year, month, currentMonthCount).toGMTString();
-      return pm;
+      return new Date(year, month, currentMonthCount).toGMTString();
     });
   });
   return daysMatrix;
 };
+
+export const onlyDateOfMonth = (month) => {
+  let monthInfo = [];
+  for(const semaine of month) {
+    for(const jour of semaine) {
+      monthInfo.push(getMonth(jour))
+    }
+  }
+  const omega = monthInfo.reduce((cnt, cur) => (cnt[cur] = cnt[cur] + 1 || 1, cnt), {});
+  const max = Object.entries(omega).sort((x,y)=>y[1]-x[1])[0]
+  return max[0];
+}
 
 export const dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];;
 

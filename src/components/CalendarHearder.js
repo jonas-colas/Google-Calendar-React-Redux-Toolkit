@@ -5,23 +5,15 @@ import { upMonth } from '../features/slices/calendar-slice';
 
 const CalendarHearder = () => {
   const dispatch = useDispatch();
-  
   const monthIndex = useSelector(state => state.calendar.monthIndex);
-
+  
   return (
     <header className="px-4 py-2 flex items-center">
       <img src={logo} alt="logo" className="mr-2 w-12 h-12" />
       <h1 className="mr-10 text-xl text-gray-500 fond-bold">Calendar</h1>
       <button
         className="border rounded py-2 px-4 mr-5"
-        onClick={() => dispatch(
-            upMonth(
-              monthIndex === getMonthNum(today)
-                ? monthIndex + Math.random()
-                : getMonthNum(today)
-            )
-          )
-        }
+        onClick={() => dispatch(upMonth(getMonthNum(today)))}
       >
         Today
       </button>
@@ -30,7 +22,7 @@ const CalendarHearder = () => {
           chevron_left
         </span>
       </button>
-      <button onClick={() => dispatch(upMonth(monthIndex + 1))}>
+      <button onClick={() => dispatch(upMonth(monthIndex + 1)) }>
         <span className="material-icons-outlined cursor-pointer text-gray-600 mx-2">
           chevron_right
         </span>

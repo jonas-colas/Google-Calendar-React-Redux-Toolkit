@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getMonthNum, today } from '../../utils';
+import { today } from '../../utils';
 
 const initialState = {
-  monthIndex: getMonthNum(today),
+  monthIndex: 0,
   smallCalendar: null,
   selectedDay: today.toUTCString(),
   selectedEvent: null,
