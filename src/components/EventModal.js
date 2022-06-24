@@ -1,14 +1,14 @@
-import { useState, useContext } from 'react';
-import GlobalContext from '../context/GlobalContext';
-import { labels } from '../constants/labels';
+import { useState } from 'react';
+import { dayMonthDate, labels } from '../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { showModal } from '../features/slices/modal-slice';
+import { addEvent, updateEvent, deleteEvent } from '../features/slices/event-slice';
 
 const EventModal = () => {
-  const { 
-    setShowEventModal, 
-    selectedDay, 
-    dispatchEvent, 
-    selectedEvent 
-  } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  
+  const selectedEvent = useSelector(state => state.calendar.selectedEvent)
+  const selectedDay = useSelector(state => state.calendar.selectedDay)
 
   const [title, setTitle] = useState(selectedEvent ?  selectedEvent.title : '');
   const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : '');
@@ -16,26 +16,28 @@ const EventModal = () => {
     selectedEvent ? labels.find(label => label.id === selectedEvent.label.id) : labels[0]
   );
   const [borderColor, setBorderColor] = useState('border-gray-200');
-
+  
   const handleEvent = (e) => {
     e.preventDefault();
     if(title.length === 0 || title.length > 30) {
       setBorderColor('border-red-200');
       return;
     }
-    const calendarEvent = {
+    
+    const event = {
       id: selectedEvent ? selectedEvent.id : Date.now(),
       title,
       description,
       label: selectedLabel,
       day: selectedDay
     };
+
     if(selectedEvent) {
-      dispatchEvent({ type: "EDIT_EVENT", payload: calendarEvent });
+      dispatch(updateEvent(event));
     }else{
-      dispatchEvent({ type: "ADD_EVENT", payload: calendarEvent});
+      dispatch(addEvent(event));
     }
-    setShowEventModal(false);
+    dispatch(showModal())
   }
 
   return (
@@ -50,16 +52,13 @@ const EventModal = () => {
               <span 
                 className="material-icons-outlined text-gray-400 cursor-pointer text-red-500 hover:text-gray-800" 
                 onClick={() => {
-                  dispatchEvent({
-                    type: "DELETE_EVENT", 
-                    payload: selectedEvent
-                  });
-                  setShowEventModal(false)
+                  dispatch(deleteEvent(selectedEvent))
+                  dispatch(showModal())
                 }}>
                 delete
               </span>
             )}
-            <button type="button" onClick={() => setShowEventModal(false)}>
+            <button type="button" onClick={() => dispatch(showModal())}>
               <span className="material-icons-outlined text-gray-400">close</span>
             </button>
           </div>
@@ -79,7 +78,7 @@ const EventModal = () => {
             </div>
             <span className="material-icons-outlined text-gray-400">schedule</span>
             <p>
-              {selectedDay.format('dddd, MMMM DD')}
+              {dayMonthDate(selectedDay)}
             </p>
             <span className="material-icons-outlined text-gray-400">segment</span>
             <input

@@ -1,26 +1,27 @@
-import dayjs from 'dayjs';
-import { useContext, useState, useEffect } from 'react';
-import GlobalContext from '../context/GlobalContext';
+import { useState, useEffect } from 'react';
+import { dateMonthYear, getDate, today, getWeekday } from '../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { showModal } from '../features/slices/modal-slice';
+import { getAllEvents } from '../features/slices/event-slice';
+import { eventSel, daySel } from '../features/slices/calendar-slice';
 
 const Day = ({ day, rowIndex }) => {
   const [daysWithEvents, setDaysWithEvents] = useState();
 
-  const {
-    setSelectedDay, 
-    setShowEventModal, 
-    storedEvents, 
-    setSelectedEvent
-  } = useContext(GlobalContext);
+  const dispatch = useDispatch();
 
+  const getEvents = useSelector(getAllEvents);
+  
   useEffect(() => {
-    const events = storedEvents.filter(
-      evt => dayjs(evt.day).format('DD-MM-YY') === day.format('DD-MM-YY')
+    
+    const events = getEvents.filter(
+      evt => dateMonthYear(evt.day) === dateMonthYear(day)
     );
     setDaysWithEvents(events);
-  }, [storedEvents, day]);
+  }, [getEvents, day]);
 
   const getCurrentDayClass = () => {
-    return day.format('DD-MM-YY') === dayjs().format('DD-MM-YY')
+    return dateMonthYear(day) === dateMonthYear(today)
       ? 'bg-blue-600 text-white rounded-full w-7'
       : '';
   };
@@ -30,26 +31,26 @@ const Day = ({ day, rowIndex }) => {
       <header className="border-y">
         {rowIndex === 0 && (
           <div className="flex flex-col items-center">
-            <p className="text-sm mt-1 mb-2 font-bold"> {day.format('ddd').toUpperCase()}</p>
+            <p className="text-sm mt-1 mb-2 font-bold"> {getWeekday(day)}</p>
           </div>
         )}
       </header>
       <div className="float-left">
         <p className={`text-sm p-1 my-1 ${getCurrentDayClass()}`}>
-          {day.format('DD')}
+          {getDate(day)}
         </p>
       </div>
       <div 
         className="flex-1 cursor-pointer" 
         onClick={() => { 
-          setSelectedDay(day); 
-          setShowEventModal(true) 
+          dispatch(daySel(day));
+          dispatch(showModal())
         }}
       >
         {daysWithEvents?.map((ev, i) => (
           <div 
             key={i}
-            onClick={() => setSelectedEvent(ev)}
+            onClick={() => dispatch(eventSel(ev))}
             className={`${ev.label.bg} p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
           >
             {ev.title}

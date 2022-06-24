@@ -1,25 +1,40 @@
-import { useState, useContext, useEffect } from 'react';
-import './App.css';
-import { getMonth } from './util';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector} from 'react-redux';
+import { pickMonth } from './utils';
 import CalendarHearder from './components/CalendarHearder';
 import Sidebar from './components/Sidebar';
 import Month from './components/Month';
 import EventModal from './components/EventModal';
-import GlobalContext from './context/GlobalContext';
+import { eventUnSelect, upMonth } from './features/slices/calendar-slice';
 
 
 function App() {
-  const [currenMonth, setCurrentMonth] = useState(getMonth());
-
-  const { monthIndex, showEventModal } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const monthIndex = useSelector(state => state.calendar.monthIndex);
+  const smallCalendar = useSelector(state => state.calendar.smallCalendar);
+  const openModal = useSelector(state => state.modal.showEventModal);
+  
+  const [currenMonth, setCurrentMonth] = useState(pickMonth());
+  
+  useEffect(() => {
+    if(!openModal) {
+      dispatch(eventUnSelect());
+    }
+  }, [openModal]);
 
   useEffect(() => {
-    setCurrentMonth(getMonth(monthIndex));
+    if(smallCalendar !== null) {
+      dispatch(upMonth(smallCalendar))
+    }
+  }, [smallCalendar]);
+
+  useEffect(() => {
+    setCurrentMonth(pickMonth(monthIndex));
   }, [monthIndex]);
 
   return (
     <>
-      {showEventModal && <EventModal />}
+      {openModal && <EventModal />}
       <div className="h-screen flex flex-col">
         <CalendarHearder />
         <div className="flex flex-1">

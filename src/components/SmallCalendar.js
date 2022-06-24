@@ -1,21 +1,28 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import { getMonth } from '../util';
-import GlobalContext from '../context/GlobalContext';
+import { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  pickMonth,
+  dateMonthYear,
+  getDate,
+  monthYear,
+  getWeekday,
+  today,
+  getMonthNum,
+  getYear,
+} from '../utils';
+import { daySel, smallCal } from '../features/slices/calendar-slice';
 
 const SmallCalendar = () => {
-  const { 
-    monthIndex, 
-    setSmallCalendarMonth, 
-    selectedDay, 
-    setSelectedDay 
-  } = useContext(GlobalContext);
+  const dispatch = useDispatch();
 
-  const [currenMonthIndex, setCurrenMonthIndex] = useState(dayjs().month());
-  const [currenMonth, setCurrenMonth] = useState(getMonth());
+  const selectedDay = useSelector(state => state.calendar.selectedDay)
+  const monthIndex = useSelector(state => state.calendar.monthIndex);
+
+  const [currenMonthIndex, setCurrenMonthIndex] = useState(getMonthNum(today));
+  const [currenMonth, setCurrenMonth] = useState(pickMonth());
 
   useEffect(() => {
-    setCurrenMonth(getMonth(currenMonthIndex));
+    setCurrenMonth(pickMonth(currenMonthIndex));
   }, [currenMonthIndex]);
 
   useEffect(() => {
@@ -23,22 +30,21 @@ const SmallCalendar = () => {
   }, [monthIndex]);
 
   const getCurrentDayClass = (day) => {
-    const format = "DD-MM-YY";
-    const today = dayjs().format(format);
-    const slctDay = selectedDay && selectedDay.format(format);
-    if (today === day.format(format)) {
+    const slctDay = selectedDay && dateMonthYear(selectedDay);
+
+    if (dateMonthYear(today) === dateMonthYear(day)) {
       return 'bg-blue-500 rounded-full text-white';
-    }else if(slctDay === day.format(format)) {
+    } else if (slctDay === dateMonthYear(day)) {
       return 'bg-blue-100 rounded-full text-blue-600 font-bold';
     }
     return '';
-  }
+  };
 
   return (
     <div className="mt-9">
       <header className="flex justify-between">
         <p className="text-gray-500 font-bold">
-          {dayjs(new Date(dayjs().year(), currenMonthIndex)).format('MMMM YYYY')}
+          {monthYear(getYear(today), currenMonthIndex)}
         </p>
         <div>
           <button onClick={() => setCurrenMonthIndex(currenMonthIndex - 1)}>
@@ -56,28 +62,28 @@ const SmallCalendar = () => {
       <div className="grid grid-cols-7 grid-rows-6">
         {currenMonth[0].map((day, i) => (
           <span key={i} className="text-xs py-1 text-center">
-            {day.format('dd').charAt(0)}
+            {getWeekday(day).charAt(0)}
           </span>
         ))}
         {currenMonth.map((week, index) => (
           <Fragment key={index}>
             {week.map((day, idx) => (
-              <button key={idx} className={`py-1 w-full ${getCurrentDayClass(day)}`} 
+              <button
+                key={idx}
+                className={`py-1 w-full ${getCurrentDayClass(day)}`}
                 onClick={() => {
-                  setSmallCalendarMonth(currenMonthIndex)
-                  setSelectedDay(day);
+                  dispatch(smallCal(currenMonthIndex));
+                  dispatch(daySel(day));
                 }}
               >
-                <span className="text-xs text-center">
-                  {day.format('D')}
-                </span>
+                <span className="text-xs text-center">{getDate(day)}</span>
               </button>
             ))}
           </Fragment>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SmallCalendar
+export default SmallCalendar;
