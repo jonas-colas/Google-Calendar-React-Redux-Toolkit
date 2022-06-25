@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Google-Calendar-React-Redux-Toolkit/static/css/main.7f487738.css",
+    "main.js": "/Google-Calendar-React-Redux-Toolkit/static/js/main.dc98500f.js",
+    "static/js/787.108506ee.chunk.js": "/Google-Calendar-React-Redux-Toolkit/static/js/787.108506ee.chunk.js",
+    "index.html": "/Google-Calendar-React-Redux-Toolkit/index.html",
+    "static/media/plus.svg": "/Google-Calendar-React-Redux-Toolkit/static/media/plus.8f3ab9f72337618f2823670542a3a8e4.svg",
+    "main.7f487738.css.map": "/Google-Calendar-React-Redux-Toolkit/static/css/main.7f487738.css.map",
+    "main.dc98500f.js.map": "/Google-Calendar-React-Redux-Toolkit/static/js/main.dc98500f.js.map",
+    "787.108506ee.chunk.js.map": "/Google-Calendar-React-Redux-Toolkit/static/js/787.108506ee.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7f487738.css",
+    "static/js/main.dc98500f.js"
+  ]
+}
