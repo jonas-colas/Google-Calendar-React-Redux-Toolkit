@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getMonth, dateMonthYear, getDate, today, getWeekday } from '../utils';
+import { getMonth, dateMonthYear, getDate, today, getWeekday, timeToNum } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../features/slices/modal-slice';
 import { getAllEvents } from '../features/slices/event-slice';
@@ -15,7 +15,10 @@ const Day = ({ day, rowIndex, monthSel }) => {
     const events = getEvents.filter(
       evt => dateMonthYear(evt.day) === dateMonthYear(day)
     );
-    setDaysWithEvents(events);
+    const orderedEvent = events.sort((a, b) => 
+      (timeToNum(a.hourStart) - timeToNum(b.hourStart))
+    );
+    setDaysWithEvents(orderedEvent);
   }, [getEvents, day]);
 
   const getCurrentDayClass = () => {
