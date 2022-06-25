@@ -18,19 +18,19 @@ function App() {
   
   useEffect(() => {
     dispatch(upMonth(getMonthNum(today)))
-  }, []);
+  }, [dispatch]); 
 
   useEffect(() => {
     if(!openModal) {
       dispatch(eventUnSelect());
     }
-  }, [openModal]);
+  }, [openModal, dispatch]); 
 
   useEffect(() => {
     if(smallCalendar !== null) {
       dispatch(upMonth(smallCalendar))
     }
-  }, [smallCalendar]);
+  }, [smallCalendar, dispatch]); 
 
   useEffect(() => {
     setCurrentMonth(pickMonth(monthIndex));

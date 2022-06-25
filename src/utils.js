@@ -80,12 +80,14 @@ export const onlyDateOfMonth = (month) => {
       monthInfo.push(getMonth(jour))
     }
   }
-  const omega = monthInfo.reduce((cnt, cur) => (cnt[cur] = cnt[cur] + 1 || 1, cnt), {});
-  const max = Object.entries(omega).sort((x,y)=>y[1]-x[1])[0]
+  // eslint-disable-next-line no-sequences
+  const mData = monthInfo.reduce((cnt, cur) => (cnt[cur] = cnt[cur] + 1 || 1, cnt), {});
+ 
+  const max = Object.entries(mData).sort((x,y)=>y[1]-x[1])[0]
   return max[0];
 }
 
-export const dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];;
+export const dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
 export const monthList = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ];
 

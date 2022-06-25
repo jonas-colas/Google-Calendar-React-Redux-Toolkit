@@ -37,10 +37,10 @@ const EventModal = () => {
   const [showForm, setShowForm] = useState(false);
   const [newDay, setNewDay] = useState(selectedDay);
   const [monthData, setMonthData] = useState([]);
-
+  
   useEffect(() => {
       setMonthData(pickMonth(monthIndex));
-  }, [showForm]);
+  }, [showForm, monthIndex]);
 
   const handleEvent = (e) => {
     e.preventDefault();
